@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="author" content="Rutagarama Axcel"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Socket.io</title>
+        <link rel="stylesheet" href="./style.css"/>
+    </head>
+    <body>
+         <ul id="messages"></ul>
+         <form id="form" action="">
+           <input id="input" placeholder="Say Something..." autocomplete="off"><button>Send</button>
+         </form>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io();
+            var messages = document.getElementById("messages");
+            var form = document.getElementById('form');
+            var input = document.getElementById('input');
+
+            form.addEventListener('submit',(e)=>{
+              e.preventDefault();
+              if(input.value != ""){
+                socket.emit('messageFromClient',input.value);
+                input.value = "";
+              }
+            });
+            socket.on('mesageFromServer',(msg)=>{
+                var item = document.createElement('li');
+                item.textContent = msg;
+                messages.appendChild(item);
+                window.scrollTo(0,document.body.scrollheight)
+            })
+        </script>
+    </body>
+</html>
